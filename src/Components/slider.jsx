@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import { UTCcontext } from '../App';
 import { ReorderIcon } from './dragIcon'
 import { Reorder, useDragControls } from 'framer-motion'
+import { DeleteIcon } from './deleteIcon';
 
 const Slider = (props) => {
   const [time, setTime] = useState(0);
@@ -126,32 +127,43 @@ const Slider = (props) => {
     return { date, dayOfWeek };
   };
 
+  const handleDelete=(event)=>{
+    const parentId = event.target.closest('div').id;
+    const parentDiv = document.getElementById(parentId);
+    if (parentDiv) {
+      parentDiv.remove();
+    }
+  }
+
 
   return (
     <Reorder.Item id={props.zone}
       value={props.zone}
       dragListener={false}
       dragControls={controls} >
-      <div className="w-4/5 mx-auto mt-8 bg-sky-100 p-8 flex flex-col md:flex-row justify-between items-center rounded-lg shadow-md">
-        <div className="w-full  md:w-3/5 mx-auto bg-sky-100  ">
+
+      <div id={props.zone} className="w-3/5 mx-auto mt-8 bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center rounded-2xl  shadow-md">
+      <ReorderIcon dragControls={controls} />
+
+        <div className="w-full  md:w-4/5 mx-auto bg-sky-100  ">
           <div className="mx-auto bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center ">
-            <div id="1" className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-yellow-500">  {props.zone}
+            <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-yellow-500">  {props.zone}
             </div>
-            <div id="2" className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-emerald-500">  {formatTime(time)}
+            <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-emerald-500">  {formatTime(time)}
             </div>
-            <div id="3" className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-red-500">  {formatDate().date}
+            <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-red-500">  {formatDate().date}
             </div>
-            <div id="3" className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-gray-950">  {formatDate().dayOfWeek}
+            <div  className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-gray-950">  {formatDate().dayOfWeek}
             </div>
           </div>
           <input
             type="range"
             min={0}
-            max={1439} 
+            max={1439}
             step={1}
             value={time}
             onChange={handleChange}
-            className="w-full"
+            className="w-full "
           />
           <div className="flex justify-between">
             {renderScaleValues().map((value, index) => (
@@ -159,14 +171,14 @@ const Slider = (props) => {
             ))}
           </div>
         </div>
-        <ReorderIcon dragControls={controls} />
+
+
+        <button onClick={handleDelete}>
+          <DeleteIcon></DeleteIcon>
+        </button>
 
 
       </div>
-
-
-
-
 
     </Reorder.Item>
   );
