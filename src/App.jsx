@@ -4,15 +4,17 @@ import './App.css'
 import Slider from './Components/slider'
 import Dropdown from './Components/dropDown'
 import { DateTime } from 'luxon'
-import { Reorder } from "framer-motion"
+import { Reorder, useDragControls } from "framer-motion"
+
 
 export const UTCcontext=createContext();
 
 function App() {
   //const [UTCglobal, setUTCglobal] = useState(DateTime.now().toUTC());
   const [UTCglobal, setUTCglobal] = useState(DateTime.utc());
-  const [items, setItems] = useState([0, 1, 2, 3])
+  const [items, setItems] = useState(["Asia/Kolkata","Europe/Paris","Asia/Tokyo","Africa/Lagos","Europe/London"])
   const zones=["Asia/Kolkata","Europe/Paris","Asia/Tokyo","Africa/Lagos"];
+  const controls = useDragControls()
 
 
 
@@ -20,13 +22,12 @@ function App() {
     <>
     <UTCcontext.Provider value={[UTCglobal,setUTCglobal]}>
 
-    <Reorder.Group values={items} onReorder={setItems}>
-      {items.map(item => (
-        <Reorder.Item key={item} value={item}>
-          <Slider zone={zones[item]}></Slider>
-        </Reorder.Item>
-      ))}
-    </Reorder.Group>
+      <Reorder.Group values={items} onReorder={setItems}>
+        {items.map(item => (
+          <Slider key={item} zone={item}></Slider>
+
+        ))}
+      </Reorder.Group>
 
     </UTCcontext.Provider>
 

@@ -1,10 +1,13 @@
 import React, { useState,useContext, useEffect } from 'react';
 import { DateTime } from 'luxon'
 import { UTCcontext } from '../App';
+import { ReorderIcon } from './dragIcon'
+import {Reorder, useDragControls} from 'framer-motion'
 
 const Slider = (props) => {
   const [time, setTime] = useState(0);
   const [UTCglobal,setUTCglobal]=useContext(UTCcontext);
+  const controls = useDragControls()
 
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
@@ -113,30 +116,38 @@ const handleChange = (event) => {
 
 
   return (
-    <div className="w-1/2 mx-auto mt-8 bg-sky-100 p-8">
-      <div className=" mx-auto bg-sky-100 p-4 flex justify-between items-center">
-        <div id="1" className="h-12 w-24 p-2 bg-white">{props.zone}</div>
-        <div id="2" className="h-12 w-24 p-2 bg-white">{formatTime(time)}</div>
-        <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().date}</div>
-        <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().dayOfWeek}</div>
-      </div>
-      <input
-        type="range"
-        min={0}
-        max={1439} // 12 hours * 60 minutes
-        step={1} // Step by 15 minutes
-        value={time}
-        onChange={handleChange}
-        className="w-full"
-      />
-      <div className="flex justify-between ">
-        {renderScaleValues().map((value, index) => (
-          <div key={index}>{value}</div>
-        ))}
-      </div>
+    <Reorder.Item id={props.zone} value={props.zone}
+                dragListener={false}
+                dragControls={controls} >
+        <div className="w-1/2 mx-auto mt-8 bg-sky-100 p-8">
+            <div className=" mx-auto bg-sky-100 p-4 flex justify-between items-center">
+                <div id="1" className="h-12 w-24 p-2 bg-white">{props.zone}</div>
+                <div id="2" className="h-12 w-24 p-2 bg-white">{formatTime(time)}</div>
+                <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().date}</div>
+                <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().dayOfWeek}</div>
+            </div>
+            <input
+                type="range"
+                min={0}
+                max={1439} // 12 hours * 60 minutes
+                step={1} // Step by 15 minutes
+                value={time}
+                onChange={handleChange}
+                className="w-full"
+            />
+            <div className="flex justify-between ">
+                      {renderScaleValues().map((value, index) => (
+                        <div key={index}>{value}</div>
+                      ))}
+            </div>
+            <ReorderIcon dragControls={controls} />
 
 
-    </div>
+        </div>
+
+
+
+    </Reorder.Item>
   );
 };
 
