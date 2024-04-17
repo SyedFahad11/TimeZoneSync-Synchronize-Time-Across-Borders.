@@ -1,8 +1,12 @@
-import { DragControls } from "framer-motion";
+
 
 
 export function ReorderIcon({dragControls} ) {
   return (
+   <button onPointerDown={(event) => dragControls.start(event)}>
+
+
+
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 39 39"
@@ -47,5 +51,7 @@ export function ReorderIcon({dragControls} ) {
         fill="#CCC"
       ></path>
     </svg>
+   </button>
+
   );
 }

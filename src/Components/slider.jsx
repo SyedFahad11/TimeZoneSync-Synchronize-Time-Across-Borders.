@@ -23,10 +23,10 @@ const Slider = (props) => {
       const hours = dateTime.hour;
       const minutes = dateTime.minute;
 
-      console.log(`Hours: ${hours}, Minutes: ${minutes}`);
+      //console.log(`Hours: ${hours}, Minutes: ${minutes}`);
 
       const totalMinutes = hours * 60 + minutes;
-      console.log(totalMinutes);
+      //console.log(totalMinutes);
       return totalMinutes;
     }
     const localTime = convertUtcToZone(UTCglobal, props.zone)
@@ -96,9 +96,21 @@ const Slider = (props) => {
   };
   const renderScaleValues = () => {
     const scaleValues = [];
-    for (let i = 0; i <= 1440; i += 180) {
-      scaleValues.push(formatTimeWithoutPad(i));
+    console.log(window.innerWidth);
+
+    if(window.innerWidth > 768){
+      for (let i = 0; i <= 1440; i += 180) {
+        scaleValues.push(formatTimeWithoutPad(i));
+      }
     }
+
+    else{
+      for (let i = 0; i <= 1440; i += 360) {
+        scaleValues.push(formatTimeWithoutPad(i));
+      }
+
+    }
+
     return scaleValues;
   }
   const formatDate = () => {
@@ -135,8 +147,8 @@ const Slider = (props) => {
           <input
             type="range"
             min={0}
-            max={1439} // 12 hours * 60 minutes
-            step={1} // Step by 15 minutes
+            max={1439} 
+            step={1}
             value={time}
             onChange={handleChange}
             className="w-full"
@@ -148,6 +160,8 @@ const Slider = (props) => {
           </div>
         </div>
         <ReorderIcon dragControls={controls} />
+
+
       </div>
 
 
