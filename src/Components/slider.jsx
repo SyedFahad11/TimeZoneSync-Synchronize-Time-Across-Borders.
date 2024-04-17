@@ -116,10 +116,12 @@ const handleChange = (event) => {
 
 
   return (
-    <Reorder.Item id={props.zone} value={props.zone}
+    <Reorder.Item id={props.zone}
+                value={props.zone}
                 dragListener={false}
                 dragControls={controls} >
-        <div className="w-1/2 mx-auto mt-8 bg-sky-100 p-8">
+      <div className="w-4/5 mx-auto mt-8 bg-sky-100 p-8 flex justify-between items-center">
+        <div className="w-3/5 mx-auto bg-sky-100">
             <div className=" mx-auto bg-sky-100 p-4 flex justify-between items-center">
                 <div id="1" className="h-12 w-24 p-2 bg-white">{props.zone}</div>
                 <div id="2" className="h-12 w-24 p-2 bg-white">{formatTime(time)}</div>
@@ -140,10 +142,11 @@ const handleChange = (event) => {
                         <div key={index}>{value}</div>
                       ))}
             </div>
-            <ReorderIcon dragControls={controls} />
-
 
         </div>
+        <ReorderIcon dragControls={controls} />
+
+      </div>
 
 
 
