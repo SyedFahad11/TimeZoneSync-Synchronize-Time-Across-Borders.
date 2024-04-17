@@ -6,22 +6,74 @@ const Slider = (props) => {
   const [time, setTime] = useState(0);
   const [UTCglobal,setUTCglobal]=useContext(UTCcontext);
 
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+function initialLocalTime(){
+    function convertUtcToZone(utcDateTime, targetZone) {
+      const utcTime = new DateTime(utcDateTime, { zone: 'utc' });
+      //const utcTime=utcDateTime;
+      const targetTime = utcTime.setZone(targetZone);
+      return targetTime;
+    }
+    function convertDateTimeToMins(dateTime){
+      const hours = dateTime.hour;
+      const minutes = dateTime.minute;
 
-  const handleChange = (event) => {
+      console.log(`Hours: ${hours}, Minutes: ${minutes}`);
+
+      const totalMinutes = hours * 60 + minutes;
+      console.log(totalMinutes);
+      return totalMinutes;
+    }
+    const localTime=convertUtcToZone(UTCglobal,props.zone)
+    const initialTime=convertDateTimeToMins(localTime);
+    setTime(initialTime);
+
+  }
+
+useEffect(()=>initialLocalTime(),[UTCglobal])
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+
+const handleChange = (event) => {
     const currMins=parseInt(event.target.value)
     setTime(currMins);
-    //setUTCglobal
     handleUTCglobal(currMins);
   };
 
   const handleUTCglobal=(currMins)=>{
-    const localDateTime=convertMinsToDateTime(currMins);
+    function convertMinsToDateTime(minutes) {
 
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+
+      const dateTime = DateTime.now().setZone(props.zone);
+      const newDateTime = dateTime.set({ hour: hours, minute: mins });
+
+      return newDateTime;
+    }
+    function convertZoneToUTC(localDateTime) {
+      const currentTime = new DateTime(localDateTime);
+      const currentUTC = currentTime.toUTC();
+      return currentUTC;
+      // const currentTime = DateTime.now().setZone(props.zone);
+      // const currentUTC = currentTime.toUTC();
+      // return currentUTC;
+    }
+
+    const localDateTime=convertMinsToDateTime(currMins);
     const UTCdateTime=convertZoneToUTC(localDateTime)
 
     setUTCglobal(UTCdateTime);
   }
 
+
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 
 
   const formatTime = (value) => {
@@ -31,6 +83,7 @@ const Slider = (props) => {
     const formattedHours = hours % 12 || 12; // Convert to 12-hour format
     return `${formattedHours}:${String(minutes).padStart(2, '0')} ${ampm}`;
   };
+
   const formatTimeWithoutPad = (value) => {
     const hours = Math.floor(value / 60);
     const minutes = value % 60;
@@ -45,82 +98,27 @@ const Slider = (props) => {
     }
     return scaleValues;
   }
+  const formatDate = () => {
+    const now = UTCglobal.setZone(props.zone);
 
-//----------------------------------------------------------------------------
+    const year = now.year;
+    const month = now.month;
+    const day = now.day;
 
-  function convertZoneToUTC(localDateTime) {
-    const currentTime = new DateTime(localDateTime);
-    const currentUTC = currentTime.toUTC();
-    return currentUTC;
-    // const currentTime = DateTime.now().setZone(props.zone);
-    // const currentUTC = currentTime.toUTC();
-    // return currentUTC;
-  }
-
-  function convertUtcToZone(utcDateTime, targetZone) {
-    const utcTime = new DateTime(utcDateTime, { zone: 'utc' });
-    //const utcTime=utcDateTime;
-    const targetTime = utcTime.setZone(targetZone);
-    return targetTime;
-  }
-
-  function convertDateTimeToMins(dateTime){
-    const hours = dateTime.hour;
-    const minutes = dateTime.minute;
-
-    console.log(`Hours: ${hours}, Minutes: ${minutes}`);
-
-    const totalMinutes = hours * 60 + minutes;
-    console.log(totalMinutes);
-    return totalMinutes;
-  }
-
-  function convertMinsToDateTime(minutes) {
-
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-
-    // Get the current local DateTime object
-    const dateTime = DateTime.now().setZone(props.zone);
-
-    // Set the hours and minutes components
-    const newDateTime = dateTime.set({ hour: hours, minute: mins });
-
-    return newDateTime;
-  }
-
-
-
-
-
-
-  function test(){
-    /* const newTime=convertUtcToZone(UTCglobal,'Asia/Kolkata');
-    console.log(UTCglobal.toISO());
-    //setUTCglobal(newTime);
-    console.log(newTime)
-     */
-
-  }
-
-  useEffect(()=>{
-    const localTime=convertUtcToZone(UTCglobal,props.zone)
-    const initialTime=convertDateTimeToMins(localTime);
-    setTime(initialTime)
-
-  },[UTCglobal])
-
-
-//----------------------------------------------------------------------------
-
-
+    const date = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    const dayOfWeek = now.toLocaleString({ weekday: 'long' });
+    //return formattedDate;
+    return {date,dayOfWeek};
+  };
 
 
   return (
     <div className="w-1/2 mx-auto mt-8 bg-sky-100 p-8">
-      <div className="w-1/2 mx-auto bg-sky-100 p-4 flex justify-between items-center">
+      <div className=" mx-auto bg-sky-100 p-4 flex justify-between items-center">
         <div id="1" className="h-12 w-24 p-2 bg-white">{props.zone}</div>
         <div id="2" className="h-12 w-24 p-2 bg-white">{formatTime(time)}</div>
+        <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().date}</div>
+        <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().dayOfWeek}</div>
       </div>
       <input
         type="range"
