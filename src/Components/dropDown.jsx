@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { StorageContext } from '../App';
+import { timezones } from '../TimeZonesData';
 
 const Dropdown = ({getter,setter}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchData, setSearchData] = useState([]);
 
 
-  const tzs=window.timezones;
+  const tzs=timezones;
 
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);

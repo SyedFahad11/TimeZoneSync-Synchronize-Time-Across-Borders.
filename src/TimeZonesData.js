@@ -1,5 +1,4 @@
-(function  () {
-  return window.timezones = [
+export const timezones= [
     "Africa/Abidjan",
     "Africa/Accra",
     "Africa/Addis_Ababa",
@@ -426,4 +425,3 @@
     "Pacific/Wake",
     "Pacific/Wallis",
   ];
-})();
