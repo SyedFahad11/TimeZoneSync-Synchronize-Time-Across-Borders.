@@ -34,33 +34,60 @@ const DropDown = ({ activities }) => {
 export default DropDown;
 */
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 
 const Dropdown = ({getter,setter}) => {
   const [selectedOption, setSelectedOption] = useState('');
-
-  const handleChange = (event) => {
-    const timezone=event.target.value
-    setSelectedOption(timezone);
-    setter([...getter,timezone])
-  };
+  const [searchTerm, setSearchTerm] = useState('');
 
   const tzs=window.timezones;
+
+
+  const handleSearch = (event) => {
+    const timezone=event.target.value;
+    setSearchTerm(timezone);
+  };
+
+  const filteredOptions = tzs.filter((tz) =>
+    tz.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSelectChange=(event)=>{
+    const timezone=event.target.value;
+    setter([...getter,timezone]);
+  }
+
+
+
+
+  useEffect(() => {
+
+  }, [selectedOption]);
 
   return (
     <div className="flex items-center">
 
-      <select
+      <input
+        id="options"
+        value={searchTerm}
+        onChange={handleSearch}
+        className="block appearance-none w-2/5 bg-white border-2 border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline justify-between mx-auto mt-4"
+      />
+
+         <select
         id="options"
         value={selectedOption}
-        onChange={handleChange}
+        onChange={handleSelectChange}
         className="block appearance-none w-2/5 bg-white border-2 border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline justify-between mx-auto mt-4"
       >
         <option value="">AddTimeZone...</option>
-        {tzs.map(tz=>{
-          return <option key={tz} value={tz}>{tz}</option>
-        })}
+        {filteredOptions.map((tz) => (
+          <option key={tz} value={tz}>
+            {tz}
+          </option>
+        ))}
       </select>
+
     </div>
 
 
