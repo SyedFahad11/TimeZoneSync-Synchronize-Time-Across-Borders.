@@ -1,40 +1,73 @@
-/* import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const DropDown = ({ activities }) => {
-  const [searchQuery, setSearchQuery] = useState('#');
+const Dropdown = ({ getter,setter }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchData, setSearchData] = useState([]);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
   const tzs=window.timezones;
 
-  const filteredTzs = tzs.filter(tz => {
-    const match = tz.toLowerCase().includes(searchQuery.toLowerCase());
-    return match;
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
 
+  };
+
+  useEffect(()=>{
+    setSearchData(tzs.filter((tz) =>tz.toLowerCase().includes(searchTerm.toLowerCase())).slice(0,10));
+  },[searchTerm])
+
+  const handleSelection=(e)=>{
+    const timezone=e.currentTarget.id
+    console.log(e.currentTarget.id);
+    setSearchTerm('');
+    setter([...getter,timezone]);
+
+
+  }
+  window.addEventListener('click', ()=>{
+    setSearchTerm('')
   });
+
+
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Search Time Zone ..."
-        value={searchQuery}
-        onChange={handleSearchChange}
-        className="border border-gray-500 rounded-md px-3 py-2 mb-4"
-      />
-      {filteredTzs.map( tz=>(
-        <p>`${tz}'</p>
+      <div className='relative flex justify-center'>
 
-      )
-      )}
+        <input
+          type="text"
+          placeholder="Search for timezone..."
+          value={searchTerm}
+          onChange={handleInputChange}
+          className="block appearance-none w-2/5 bg-white border-2 border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline justify-between mx-auto mt-4"
+        />
+        <div className='absolute z-10 justify-center  bg-gray-100 w-2/5 mt-14'>
+          {
+            searchTerm &&
+            searchData.map(item=>{
+              return (
+
+
+
+                  <div key={item} id={item} onClick={handleSelection} className='px-4'>
+                    {item}
+                    <hr/>
+
+                    </div>
+              )
+            })
+          }
+        </div>
+      </div>
+
+
     </div>
   );
 };
-export default DropDown;
-*/
 
-import React, { useState,useEffect } from 'react';
+export default Dropdown;
+
+
+/* import React, { useState,useEffect } from 'react';
 
 const Dropdown = ({getter,setter}) => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -95,7 +128,7 @@ const Dropdown = ({getter,setter}) => {
   );
 };
 
-export default Dropdown;
+export default Dropdown; */
 
 {/* <div className="flex flex-col">
       <div className="bg-red-500 h-16">Item 1</div>
@@ -103,3 +136,16 @@ export default Dropdown;
       <div className="bg-green-500 h-16">Item 3</div>
 </div>
  */}
+
+/*  <select
+        value={selectedOption}
+        onChange={handleSelectChange}
+        className="block appearance-none w-2/5 bg-white border-2 border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline justify-between mx-auto mt-4"
+      >
+        <option value="">AddTimeZone...</option>
+        {filteredOptions.map((tz) => (
+          <option key={tz} value={tz}>
+            {tz}
+          </option>
+        ))}
+      </select> */

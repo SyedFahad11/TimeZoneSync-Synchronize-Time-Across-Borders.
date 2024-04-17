@@ -13,7 +13,6 @@ function App() {
   //const [UTCglobal, setUTCglobal] = useState(DateTime.now().toUTC());
   const [UTCglobal, setUTCglobal] = useState(DateTime.utc());
   const [items, setItems] = useState(["Asia/Kolkata"])
-  const zones=["Asia/Kolkata","Europe/Paris","Asia/Tokyo","Africa/Lagos"];
   const controls = useDragControls()
 
 
