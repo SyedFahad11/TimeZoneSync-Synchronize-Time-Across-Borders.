@@ -120,33 +120,32 @@ const handleChange = (event) => {
                 value={props.zone}
                 dragListener={false}
                 dragControls={controls} >
-      <div className="w-4/5 mx-auto mt-8 bg-sky-100 p-8 flex justify-between items-center">
-        <div className="w-3/5 mx-auto bg-sky-100">
-            <div className=" mx-auto bg-sky-100 p-4 flex justify-between items-center">
-                <div id="1" className="h-12 w-24 p-2 bg-white">{props.zone}</div>
-                <div id="2" className="h-12 w-24 p-2 bg-white">{formatTime(time)}</div>
-                <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().date}</div>
-                <div id="3" className="h-12 w-30 p-2 bg-white">{formatDate().dayOfWeek}</div>
-            </div>
-            <input
-                type="range"
-                min={0}
-                max={1439} // 12 hours * 60 minutes
-                step={1} // Step by 15 minutes
-                value={time}
-                onChange={handleChange}
-                className="w-full"
-            />
-            <div className="flex justify-between ">
-                      {renderScaleValues().map((value, index) => (
-                        <div key={index}>{value}</div>
-                      ))}
-            </div>
-
+      <div className="w-4/5 mx-auto mt-8 bg-sky-100 p-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="w-4/5 md:w-3/5 mx-auto bg-sky-100">
+          <div className="mx-auto bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center">
+            <div id="1" className="h-12 md:w-1/4 p-2 bg-white">{props.zone}</div>
+            <div id="2" className="h-12 md:w-1/4 p-2 bg-white">{formatTime(time)}</div>
+            <div id="3" className="h-12 md:w-1/4 p-2 bg-white">{formatDate().date}</div>
+            <div id="3" className="h-12 md:w-1/4 p-2 bg-white">{formatDate().dayOfWeek}</div>
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={1439} // 12 hours * 60 minutes
+            step={1} // Step by 15 minutes
+            value={time}
+            onChange={handleChange}
+            className="w-full"
+          />
+          <div className="flex justify-between">
+            {renderScaleValues().map((value, index) => (
+              <div key={index}>{value}</div>
+            ))}
+          </div>
         </div>
-        <ReorderIcon dragControls={controls} />
+      <ReorderIcon dragControls={controls} />
+    </div>
 
-      </div>
 
 
 
