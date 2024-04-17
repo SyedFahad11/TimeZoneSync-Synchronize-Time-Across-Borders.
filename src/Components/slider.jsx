@@ -141,12 +141,19 @@ const Slider = (props) => {
       parentDiv.remove();
     }
   }
+  var dragButtonToggle=false;
+  if(window.innerWidth<768){
+    dragButtonToggle=true;
+  }
+  else{
+    dragButtonToggle=false;
+  }
 
 
   return (
     <Reorder.Item id={props.zone}
       value={props.zone}
-      dragListener={false}
+      dragListener={dragButtonToggle}
       dragControls={controls} >
 
       <div id={props.zone} className="w-3/5 mx-auto mt-8 bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center rounded-2xl  shadow-md">
