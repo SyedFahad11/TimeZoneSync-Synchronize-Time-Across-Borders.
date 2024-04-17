@@ -8,6 +8,8 @@ import { DeleteIcon } from './deleteIcon';
 const Slider = (props) => {
   const [time, setTime] = useState(0);
   const [UTCglobal, setUTCglobal] = useContext(UTCcontext);
+
+
   const controls = useDragControls()
 
   //----------------------------------------------------------------------------
@@ -127,10 +129,15 @@ const Slider = (props) => {
     return { date, dayOfWeek };
   };
 
-  const handleDelete=(event)=>{
+  const handleDelete= async (event)=>{
     const parentId = event.target.closest('div').id;
     const parentDiv = document.getElementById(parentId);
     if (parentDiv) {
+      const newArray=props.getter.filter(item=>item!=parentId);
+
+      await props.setter(newArray);
+      const toStore=await JSON.stringify(newArray)
+      await localStorage.setItem('userZones',toStore);
       parentDiv.remove();
     }
   }
@@ -145,7 +152,7 @@ const Slider = (props) => {
       <div id={props.zone} className="w-3/5 mx-auto mt-8 bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center rounded-2xl  shadow-md">
       <ReorderIcon dragControls={controls} />
 
-        <div className="w-full  md:w-4/5 mx-auto bg-sky-100  ">
+        <div className="w-full  md:w-4/5 mx-auto bg-sky-100  " >
           <div className="mx-auto bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center ">
             <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-yellow-500">  {props.zone}
             </div>

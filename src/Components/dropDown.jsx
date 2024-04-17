@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { StorageContext } from '../App';
 
-const Dropdown = ({ getter,setter }) => {
+const Dropdown = ({getter,setter}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchData, setSearchData] = useState([]);
+
 
   const tzs=window.timezones;
 
@@ -15,12 +17,15 @@ const Dropdown = ({ getter,setter }) => {
     setSearchData(tzs.filter((tz) =>tz.toLowerCase().includes(searchTerm.toLowerCase())).slice(0,10));
   },[searchTerm])
 
-  const handleSelection=(e)=>{
+  const handleSelection=async(e)=>{
     const timezone=e.currentTarget.id
-    console.log(e.currentTarget.id);
     setSearchTerm('');
-    setter([...getter,timezone]);
-
+    const newArray=[...getter,timezone];
+    await setter(newArray);
+    await localStorage.setItem('userZones',JSON.stringify(newArray))
+    /* var accString="";
+    getter.forEach(item=>accString=accString+item+" ");
+    console.log(accString); */
 
   }
   window.addEventListener('click', ()=>{
