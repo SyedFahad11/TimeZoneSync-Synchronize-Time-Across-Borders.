@@ -106,7 +106,6 @@ const Slider = (props) => {
         scaleValues.push(formatTimeWithoutPad(i));
       }
     }
-
     else{
       for (let i = 0; i <= 1440; i += 360) {
         scaleValues.push(formatTimeWithoutPad(i));
@@ -142,6 +141,7 @@ const Slider = (props) => {
     }
   }
   var dragButtonToggle=false;
+
   if(window.innerWidth<768){
     dragButtonToggle=true;
   }
@@ -156,18 +156,19 @@ const Slider = (props) => {
       dragListener={dragButtonToggle}
       dragControls={controls} >
 
-      <div id={props.zone} className="w-3/5 mx-auto mt-8 bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center rounded-2xl  shadow-md">
+      <div id={props.zone} className="w-3/5 mx-auto mt-8 bg-sky-100 dark:bg-stone-600  p-4 flex flex-col md:flex-row justify-between items-center rounded-2xl  shadow-md border-2 border-slate-400 dark:border-white">
       <ReorderIcon dragControls={controls} />
 
-        <div className="w-full  md:w-4/5 mx-auto bg-sky-100  " >
-          <div className="mx-auto bg-sky-100 p-4 flex flex-col md:flex-row justify-between items-center ">
-            <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-yellow-500">  {props.zone}
+        <div className="w-full  md:w-4/5 mx-auto bg-sky-100 dark:bg-stone-600  " >
+
+          <div className="mx-auto bg-sky-100 dark:bg-stone-600   p-4 flex flex-col md:flex-row justify-between items-center ">
+            <div className="h-12 md:w-1/4 p-2 bg-white dark:bg-stone-800 dark:text-white rounded-xl shadow-md text-center border-2 border-yellow-500">  {props.zone}
             </div>
-            <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-emerald-500">  {formatTime(time)}
+            <div className="h-12 md:w-1/4 p-2 bg-white dark:bg-stone-800 dark:text-white rounded-xl shadow-md text-center border-2 border-emerald-500">  {formatTime(time)}
             </div>
-            <div className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-red-500">  {formatDate().date}
+            <div className="h-12 md:w-1/4 p-2 bg-white  dark:bg-stone-800 dark:text-white rounded-xl shadow-md text-center border-2 border-red-500">  {formatDate().date}
             </div>
-            <div  className="h-12 md:w-1/4 p-2 bg-white rounded-xl shadow-md text-center border-2 border-gray-950">  {formatDate().dayOfWeek}
+            <div  className="h-12 md:w-1/4 p-2 bg-white  dark:bg-stone-800 dark:text-white rounded-xl shadow-md text-center border-2 border-cyan-700">  {formatDate().dayOfWeek}
             </div>
           </div>
           <input
@@ -181,7 +182,7 @@ const Slider = (props) => {
           />
           <div className="flex justify-between">
             {renderScaleValues().map((value, index) => (
-              <div key={index}>{value}</div>
+              <div className='dark:text-white' key={index}>{value}</div>
             ))}
           </div>
         </div>

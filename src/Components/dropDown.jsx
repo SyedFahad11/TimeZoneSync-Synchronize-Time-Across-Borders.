@@ -24,9 +24,7 @@ const Dropdown = ({getter,setter}) => {
     const newArray=[...getter,timezone];
     await setter(newArray);
     await localStorage.setItem('userZones',JSON.stringify(newArray))
-    /* var accString="";
-    getter.forEach(item=>accString=accString+item+" ");
-    console.log(accString); */
+
 
   }
   window.addEventListener('click', ()=>{
@@ -37,16 +35,19 @@ const Dropdown = ({getter,setter}) => {
 
   return (
     <div>
-      <div className='relative flex justify-center'>
+      <div className='relative flex justify-center mt-4 '>
 
         <input
           type="text"
           placeholder="Search for timezone..."
           value={searchTerm}
           onChange={handleInputChange}
-          className="block appearance-none w-2/5 bg-white border-2 border-gray-400 hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline justify-between mx-auto mt-4"
+          className="block appearance-none w-2/5 bg-white dark:bg-stone-600 dark:text-white border-2 border-white hover:border-gray-500 px-4 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline
+          border-2 border-slate-400 dark:border-white
+          justify-between mx-auto mt-4"
         />
-        <div className='absolute z-10 justify-center  bg-gray-100 w-2/5 mt-14'>
+
+        <div className='absolute z-10 justify-center  bg-gray-100 dark:bg-stone-500 w-2/5 mt-14'>
           {
             searchTerm &&
             searchData.map(item=>{
@@ -54,7 +55,7 @@ const Dropdown = ({getter,setter}) => {
 
 
 
-                  <div key={item} id={item} onClick={handleSelection} className='px-4'>
+                  <div key={item} id={item} onClick={handleSelection} className='px-4 dark:text-white '>
                     {item}
                     <hr/>
 
