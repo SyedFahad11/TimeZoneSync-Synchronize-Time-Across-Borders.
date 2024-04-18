@@ -6,6 +6,7 @@ import Dropdown from './Components/dropDown'
 import { DateTime } from 'luxon'
 import { Reorder, useDragControls } from "framer-motion"
 import { MdDarkMode } from "react-icons/md";
+import { TbMobiledata } from "react-icons/tb";
 
 
 export const UTCcontext=createContext();
@@ -14,7 +15,7 @@ export const StorageContext=createContext();
 function App() {
   //const [UTCglobal, setUTCglobal] = useState(DateTime.now().toUTC());
   const [UTCglobal, setUTCglobal] = useState(DateTime.utc());
-  const [items, setItems] = useState(["Asia/Kolkata","Australia/Melbourne"])
+  const [items, setItems] = useState(["Asia/Kolkata","Australia/Melbourne"]);
   const controls = useDragControls()
 
   const [theme,setTheme]=useState('light');
@@ -42,6 +43,16 @@ function App() {
 
   },[theme])
 
+  const handleReorder=async(e)=>{
+    e.preventDefault();
+    const newArray=items.reverse();
+    await setItems(newArray);
+    await localStorage.setItem('userZones',JSON.stringify(newArray))
+
+    window.location.reload();
+
+  }
+
 
 
 
@@ -49,19 +60,22 @@ function App() {
     <>
 
       <UTCcontext.Provider value={[UTCglobal,setUTCglobal]} >
-        <div className="dark:bg-gray-950 pb-96 ">
+        <div className="dark:bg-gray-950 pb-96   ">
 
-          <div className='flex flex-row'>
+          <div className='flex flex-row w-4/5 mx-auto'>
+            <button onClick={handleReorder} className="dark:bg-stone-600 bg-sky-200 hover:bg-red-500 text-white font-bold rounded-2xl mx-auto mt-4 border-2 border-slate-400 dark:border-white text-3xl p-4 ">
+              <TbMobiledata />
+            </button>
 
-              <div className='w-full ml-8'>
+            <div className='w-full '>
 
-                <Dropdown getter={items} setter={setItems}></Dropdown>
-                </div>
+              <Dropdown getter={items} setter={setItems}></Dropdown>
+            </div>
 
 
-              <button onClick={handleThemeChange} class="dark:bg-stone-600 bg-sky-200 hover:bg-red-500 text-white font-bold py-4 px-8 rounded-2xl mx-auto mt-4 border-2 border-slate-400 dark:border-white ">
-                      <MdDarkMode />
-              </button>
+            <button onClick={handleThemeChange} class="dark:bg-stone-600 bg-sky-200 hover:bg-red-500 text-white font-bold rounded-2xl mx-auto mt-4 border-2 border-slate-400 dark:border-white text-3xl px-4 p-4 ">
+              <MdDarkMode />
+            </button>
 
 
           </div>
